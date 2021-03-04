@@ -42,7 +42,7 @@ request(courseUrl,async function(error,response,html){
         const obj = scr.children[0];
         const data = JSON.parse(obj.data);
         const graphObjKey = Object.keys(data)[1];
-        console.log(data[graphObjKey]);
+        //console.log(data[graphObjKey]);
         const promises = [];
         if(pathDownload){
             try{
@@ -52,9 +52,11 @@ request(courseUrl,async function(error,response,html){
                 process.exit(1);
             }
         }
+        let index=1;
         for(let videoObj of data[graphObjKey]){
-            let title = videoObj.name.replace(/\s/g,'-');
-            title = title.replace(/\\|\//g,'');
+            let titleDesc = videoObj.name.replace(/\s/g,'-').replace(/\\|\//g,'');
+            let title = index.toString() + titleDesc;
+            index++;
             promises.push(downloadFile(title,videoObj.url));
         }
         console.log(`Download in proccess...`);
